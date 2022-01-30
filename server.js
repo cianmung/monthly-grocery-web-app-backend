@@ -14,9 +14,7 @@ app.use(express.json());
 const uri = process.env.MONGODB_URI || 'mongodb://localhost/monthlypayments';
 mongoose.connect(uri, { 
     useNewUrlParser: true, 
-    useUnifiedTopology: true, 
-    useCreateIndex: true,
-    useFindAndModify: false,
+    useUnifiedTopology: true,
 });
 
 const connection = mongoose.connection;

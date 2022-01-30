@@ -14,7 +14,7 @@ import useAxiosFetch from "./hooks/useAxiosFetch";
 function App() {
   const setPaymentDetails = useStoreActions((actions) => actions.setPaymentDetails);
   //const { data } = useAxiosFetch('http://localhost:3500/payments');
-  const { data } = useAxiosFetch('http://localhost:5000/paymentdetails');
+  const { data } = useAxiosFetch('/paymentdetails');
 
   useEffect(() => {
     setPaymentDetails(data);
