@@ -11,8 +11,13 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true,});
+const uri = process.env.MONGODB_URI || 'mongodb://localhost/monthlypayments';
+mongoose.connect(uri, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+    useCreateIndex: true,
+    useFindAndModify: false,
+});
 
 const connection = mongoose.connection;
 connection.once('open', ()=> {
