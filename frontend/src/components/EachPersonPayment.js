@@ -1,11 +1,14 @@
-import Avatar from "../files/dummyavatar.png";
 import { Link } from "react-router-dom";
+import { useStoreState } from "easy-peasy";
 
 const EachPersonPayment = ({each}) => {
+    const payeeOptions = useStoreState((state) => state.payeeOptions);
+    const payeeAvatar = payeeOptions.find(option => option.text === each.name).image.src;
+
   return (
         <div className="each-person-payment-container">
         <div className="person-profile-image-container">
-            <img src={Avatar} alt="avatar"/>
+            <img src={payeeAvatar} alt="avatar"/>
         </div>
         <div className="person-profile-payment-container">
             <div className="person-profile-payment-body">

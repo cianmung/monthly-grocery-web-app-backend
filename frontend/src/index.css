@@ -28,24 +28,25 @@ code {
   align-items: center;
 }
 
-.header {
+.main-header {
   width: 100%;
   display: flex;
   background: #1b1c1d;
   padding: 0.5em 1em;
 }
 
-.header-title {
+.main-header-title {
   flex-grow: 2;
   display: flex;
   align-items: center;
 }
 
-.header-title h2 {
+.main-header-title h2 {
   color: #eeeeee;
+  font-size: 1.3em;
 }
 
-.header .ui.inverted.segment {
+.main-header .ui.inverted.segment {
   border-radius: 0px;
   margin: 0px;
   flex-grow: 1;
@@ -69,6 +70,18 @@ code {
 .footer-wrapper h4 {
   font-size: 16px;
   margin: 0em;
+}
+
+.ui.negative.message {
+  margin-top: 30%;
+  font-size: 18px;
+  line-height: 1.4em;
+  padding: 1.5em 1em;
+}
+
+.ui.negative.message .header {
+  font-size: 26px;
+  line-height: 1.4em;
 }
 
 .Home, .About, .NewGrocery, .PaymentDetails, .EditPaymentDetail, .ResultPayments{
@@ -99,11 +112,12 @@ code {
 
 .person-profile-image-container {
   width: 30%;
+  padding: 1em;
 }
 
 .person-profile-image-container img {
   width: 100%;
-  border-radius: 5px;
+  margin-top: 5px;
 }
 
 .person-profile-payment-container {
@@ -142,7 +156,7 @@ code {
 
 /* Add New Grocery Page CSS */
 .add-new-grocery-container {
-  padding: 15vh 1em 0em;
+  padding: 15vh 0em 0em;
 } 
 
 .add-new-grocery {
@@ -171,12 +185,20 @@ code {
   font-size: 16px;
 }
 
+.ui.dropdown>.text>.image, .ui.dropdown>.text>img {
+  margin-top: -0.25em; 
+}
+
 .add-new-grocery .button {
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
 /* Payment Details  CSS */
+
+.payment-details-container {
+  padding: 0em;
+}
 
 .payment-details-container h3 {
   text-align: center;
@@ -199,26 +221,57 @@ code {
   margin-top: 1em;
 }
 
-.table.payment-detail-body-table {
-  background: #ffffffdb;
+.ui.card.payment-details {
+  background: #ffffffbf;
+}
+
+.ui.card>.content.payment-records-content-container {
+  max-height: 35vh;
+  overflow-y: auto;
+}
+
+.payment-records-content-header {
+  text-align: center!important;
+  padding: 0.2em 0em;
 }
 
 .payment-detail-button {
   text-align: center;
 }
 
+.payment-records-feed-summary-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payment-records-feed-editor {
+  display: flex;
+  align-items: center;
+}
+
+.payment-records-feed-editor i {
+  font-size: 20px;
+  margin: 0em 5px!important;
+}
+
+.payment-records-feed-summary p {
+  margin: 0em!important;
+  font-weight: 500;
+}
+
 /* Calculate Payments */
+.ResultPayments {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .calculate-payment-container {
  background-color: #ffffffd4;
  padding: 1em;
- margin: 1em;
  border-radius: 5px;
  box-shadow: 0px 0px 5px#1b1c1d50;
-}
-
-.calculate-payment-container h2{
-  text-align: center;
-  padding: 0.5em;
+ width: 100%;
 }
 
 .ui.card, .ui.cards>.card {

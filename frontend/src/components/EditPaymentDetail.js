@@ -1,11 +1,15 @@
 import { Dropdown } from 'semantic-ui-react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useEffect } from 'react';
+import Avatar from "../files/dummyavatar.png";
 
 const EditPaymentDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const isLoading = useStoreState((state) => state.isLoading);
+    const isError = useStoreState((state) => state.isError);
+    const payeeOptions = useStoreState((state) => state.payeeOptions);
 
     const paymentDetails = useStoreState((state) => state.paymentDetails);
     const getEachPaymentById = useStoreState((state) => state.getEachPaymentById)
@@ -19,27 +23,6 @@ const EditPaymentDetail = () => {
     const setEditGroceries = useStoreActions((actions) => actions.setEditGroceries);
     const setEditPaymentMadeBy = useStoreActions((actions) => actions.setEditPaymentMadeBy);
     const updatePaymentDetail = useStoreActions((actions) => actions.updatePaymentDetail);
-
-    const options = [
-        {
-          key: 1,
-          text: "Tony",
-          value: "Tony",
-          image: { avatar: true, src: "/static/media/dummyavatar.ff7f29ae1356a6400c22.png" }
-        },
-        {
-          key: 2,
-          text: "Steve",
-          value: "Steve",
-          image: { avatar: true, src: "/static/media/dummyavatar.ff7f29ae1356a6400c22.png" }
-        },
-        {
-          key: 3,
-          text: "Maya",
-          value: "Maya",
-          image: { avatar: true, src: "/static/media/dummyavatar.ff7f29ae1356a6400c22.png" }
-        }
-      ]
 
       useEffect(() => {
         if(eachPayment) {
@@ -56,7 +39,22 @@ const EditPaymentDetail = () => {
       }
   return(
       <div className='EditPaymentDetail'>
-        {editAmount &&
+        {isError &&
+        <div class="ui error message">
+          <div class="content">
+              <div class="header">{isError}</div>
+          </div>
+        </div>
+        }
+        {!isError && isLoading && 
+        <div className="loader">
+          <div className="ui active transition visible inverted dimmer">
+            <div className="content">
+              <div className="ui inverted text loader">Loading</div>
+            </div>
+          </div>
+        </div>}
+        {!isError && !isLoading && eachPayment &&
         <>
           <div className="add-new-grocery-container">
             <div className="add-new-grocery">
@@ -70,7 +68,7 @@ const EditPaymentDetail = () => {
                       pattern="[0-9]*"
                       placeholder="Amount"
                       required
-                      value={parseFloat(editAmount)}
+                      value={isNaN(parseFloat(editAmount)) ? 0 : parseFloat(editAmount)}
                       onChange={(e) => setEditAmount(e.target.value)}
                     />
                 </div>
@@ -87,7 +85,7 @@ const EditPaymentDetail = () => {
                     Payment made by: {' '}
                     <Dropdown 
                       inline
-                      options={options}
+                      options={payeeOptions}
                       defaultValue={eachPayment.name}
                       onChange={(e) => setEditPaymentMadeBy(e.target.innerText)}
                     />
@@ -99,14 +97,13 @@ const EditPaymentDetail = () => {
           </div>
           </>
         }
-        {!editAmount && 
+        {!isError && !isLoading && !eachPayment && 
           <div className="EditPaymentDetails">
             <>
-              <h2>Post Not Found</h2>
-              <p>Well, that's disappointing.</p>
-              <p>
-                 <Link to='/'>Visit Our Homepage</Link>
-              </p>
+              <div class="ui negative message">
+                <div class="header">Error 404</div>
+                <p>This record cannot be found.</p>
+              </div>
             </>
           </div>
         }

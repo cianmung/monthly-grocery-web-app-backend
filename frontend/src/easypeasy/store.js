@@ -1,5 +1,8 @@
 import { createStore, action, computed, thunk } from "easy-peasy";
 import api from '../api/payments';
+import CMAvatar from "../files/ironman.png";
+import LuluAvatar from "../files/wonder.png";
+import HapAvatar from "../files/batman.png";
 
 export default createStore({
     isLoading: false,
@@ -55,21 +58,13 @@ export default createStore({
     setNewGroceries: action((state, payload) => {
         state.newGroceries = payload;
     }),
-    paymentMadeBy: 'Tony',
+    paymentMadeBy: 'Cian',
     setPaymentMadeBy: action((state, payload) => {
         state.paymentMadeBy = payload;
     }),
     addNewPayment: thunk((actions, newPayment, helpers) => {
         const { paymentDetails } = helpers.getState();
         actions.setIsLoading(true);
-        /*try {
-            const response = await api.post('/paymentdetails', newPayment);
-            actions.setPaymentDetails([...paymentDetails, response.data]);
-            actions.setNewAmount('');
-            actions.setNewGroceries('');
-        } catch (err) {
-            console.log(`Error: ${err.message}`);
-        }*/
         return api.post('/paymentdetails', newPayment)
             .then(() => {
                 actions.setPaymentDetails([...paymentDetails, newPayment]);
@@ -123,5 +118,25 @@ export default createStore({
     confirmDeletePopUp: false,
     setConfirmDeletePopUp: action((state, payload) => {
         state.confirmDeletePopUp = payload;
-    })
+    }),
+    payeeOptions: [
+        {
+            key: 1,
+            text: "Cian",
+            value: "Cian",
+            image: { avatar: true, src: CMAvatar }
+          },
+          {
+            key: 2,
+            text: "Lulu",
+            value: "Lulu",
+            image: { avatar: true, src: LuluAvatar }
+          },
+          {
+            key: 3,
+            text: "Hap",
+            value: "Hap",
+            image: { avatar: true, src: HapAvatar}
+          }
+    ]
 })
