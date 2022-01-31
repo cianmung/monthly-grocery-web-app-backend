@@ -2,6 +2,14 @@ import { createStore, action, computed, thunk } from "easy-peasy";
 import api from '../api/payments';
 
 export default createStore({
+    isLoading: false,
+    setIsLoading: action((state, payload) => {
+        state.isLoading = payload;
+    }),
+    isError: '',
+    setIsError: action((state, payload) => {
+        state.isError = payload;
+    }),
     activeMenuItem: "home",
     setActiveMenuItem: action((state, payload) => {
         state.activeMenuItem = payload;
@@ -51,16 +59,25 @@ export default createStore({
     setPaymentMadeBy: action((state, payload) => {
         state.paymentMadeBy = payload;
     }),
-    addNewPayment: thunk(async (actions, newPayment, helpers) => {
+    addNewPayment: thunk((actions, newPayment, helpers) => {
         const { paymentDetails } = helpers.getState();
-        try {
+        actions.setIsLoading(true);
+        /*try {
             const response = await api.post('/paymentdetails', newPayment);
             actions.setPaymentDetails([...paymentDetails, response.data]);
             actions.setNewAmount('');
             actions.setNewGroceries('');
         } catch (err) {
             console.log(`Error: ${err.message}`);
-        }
+        }*/
+        return api.post('/paymentdetails', newPayment)
+            .then(() => {
+                actions.setPaymentDetails([...paymentDetails, newPayment]);
+                actions.setNewAmount('');
+                actions.setNewGroceries('');
+                actions.setIsLoading(false);
+            })
+            .catch((err) => actions.setIsError(err.message))
     }),
     getEachPaymentById: computed((state) => {
         return (id) => state.paymentDetails.find(each => each._id.toString() === id.toString());        
@@ -80,24 +97,31 @@ export default createStore({
     updatePaymentDetail: thunk(async (actions, updatePayment, helpers) => {
         const { paymentDetails } = helpers.getState();
         const { id } = updatePayment;
-        try {
-            const response = await api.put(`/paymentdetails/${id}`, updatePayment);
-            console.log(paymentDetails)
-            actions.setPaymentDetails(paymentDetails.map(each => each._id === id.toString() ? {...response.data} : each));
-            actions.setEditAmount('');
-            actions.setEditGroceries('');
-            actions.setEditPaymentMadeBy('');
-        } catch (err) {
-            console.log(`Error: ${err.message}`);
-        }
+        actions.setIsLoading(true);
+
+        return api.put(`/paymentdetails/${id}`, updatePayment)
+            .then(() => {
+                actions.setPaymentDetails(paymentDetails.map(each => each._id === id.toString() ? {...updatePayment} : each));
+                actions.setEditAmount('');
+                actions.setEditGroceries('');
+                actions.setEditPaymentMadeBy('');
+                actions.setIsLoading(false);
+            })
+            .catch((err) => actions.setIsError(err.message));
+
     }),
-    deletePaymentDetail: thunk(async (actions, id, helpers) => {
+    deletePaymentDetail: thunk((actions, id, helpers) => {
         const { paymentDetails } = helpers.getState();
-        try {
-            await api.delete(`/paymentdetails/${id}`);
-            actions.setPaymentDetails(paymentDetails.filter(each => each.id !== id));
-        } catch (err) {
-            console.log(`Error: ${err.message}`);
-        }
+        actions.setIsLoading(true);
+        return api.delete(`/paymentdetails/${id}`)
+            .then(() => {
+                actions.setPaymentDetails(paymentDetails.filter(each => each._id !== id));
+                actions.setIsLoading(false);
+            })
+            .catch((err) => actions.setIsError(err.message));
+    }),
+    confirmDeletePopUp: false,
+    setConfirmDeletePopUp: action((state, payload) => {
+        state.confirmDeletePopUp = payload;
     })
 })

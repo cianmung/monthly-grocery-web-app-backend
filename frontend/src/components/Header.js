@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return(
@@ -8,8 +8,8 @@ const Header = () => {
       </div>
       <div className="ui inverted segment">
         <div className="ui inverted secondary menu">
-          <Link to="/" className="active item"> Home</Link>
-          <Link to="/newgrocery" className="item"> New Grocery </Link>
+          <NavLink to="/" className={({isActive}) => "item" + (isActive ? " active" : "")}>Home</NavLink>
+          <NavLink to="/newgrocery" className={({isActive}) => "item" + (isActive ? " active" : "")}>Add Grocery</NavLink>
         </div>
       </div>
     </div>

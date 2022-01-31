@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 const useAxiosFetch = (dataUrl) => {
     const [data, setData] = useState([]);
+    const paymentDetails = useStoreState((state) => state.paymentDetails);
+    const isLoading = useStoreState((state) => state.isLoading);
+    const setIsLoading= useStoreActions((actions) => actions.setIsLoading);
 
     useEffect(() => {
         let isMounted = true;
         const source = axios.CancelToken.source();
 
         const fetchData = async (url) => {
+            setIsLoading(true);
             try {
                 const response = await axios.get(url, {
                     cancelToken: source.token
@@ -20,6 +25,8 @@ const useAxiosFetch = (dataUrl) => {
                 if(isMounted) {
                     setData([]);
                 }
+            } finally {
+                isMounted && setIsLoading(false);
             }
         }
 

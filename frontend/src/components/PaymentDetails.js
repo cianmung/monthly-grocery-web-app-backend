@@ -1,5 +1,5 @@
 import Avatar from "../files/dummyavatar.png";
-import { Table } from 'semantic-ui-react';
+import { Table, Confirm } from 'semantic-ui-react';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
@@ -15,18 +15,32 @@ const PaymentDetails = () => {
     const getEachPaymentDetailsByName = useStoreState((state) => state.getEachPaymentDetailsByName);
     const filterEachRecord = getEachPaymentDetailsByName(name);
     const deletePaymentDetail = useStoreActions((actions) => actions.deletePaymentDetail);
+    const confirmDeletePopUp = useStoreState((state) => state.confirmDeletePopUp);
+    const setConfirmDeletePopUp = useStoreActions((actions) => actions.setConfirmDeletePopUp);
 
     
     useEffect(() => {
         setEachPersonRecord(filterEachRecord);
         setPaymentDetailDisplayName(name);
-    },[paymentDetails, setEachPersonRecord, setPaymentDetailDisplayName])
+    },[paymentDetails, setEachPersonRecord, setPaymentDetailDisplayName, deletePaymentDetail])
 
-    const handleDelete = (id) => {
+    const handleDelete = (id, name) => {
         deletePaymentDetail(id);
-        navigate('/');
+        navigate(`/paymentdetail/${name}`);
     }
     
+    const handleDeleteCancel = () => {
+        setConfirmDeletePopUp(false);
+    }
+
+    const handleDeleteConfirm = (id, name) => {
+        setConfirmDeletePopUp(false);
+        handleDelete(id, name)
+    }
+
+    const showDeleteConfirm = () => {
+        setConfirmDeletePopUp(true);
+    }
   return (
       <div className="PaymentDetails">
           <div className="payment-details-container">
@@ -60,8 +74,15 @@ const PaymentDetails = () => {
                                 <i 
                                     aria-hidden="true"
                                     className="trash alternate icon"
-                                    onClick={() => handleDelete(each._id)}
+                                    onClick={() => showDeleteConfirm()}
                                     style={{ cursor:"pointer", color: "red"}}
+                                />
+                                <Confirm
+                                    open={confirmDeletePopUp}
+                                    cancelButton='No'
+                                    confirmButton="Yes"
+                                    onCancel={() => handleDeleteCancel()}
+                                    onConfirm={() => handleDeleteConfirm(each._id, each.name)}
                                 />
                             </Table.Cell>                            
                             </Table.Row>
