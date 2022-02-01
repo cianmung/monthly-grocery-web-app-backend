@@ -56,7 +56,7 @@ const AddNewGrocery = () => {
                   <input 
                       id="newAmount"
                       type="text"
-                      pattern="[0-9]*"
+                      pattern="[0.00-9.00]*"
                       placeholder="Amount"
                       required
                       value={newAmount}

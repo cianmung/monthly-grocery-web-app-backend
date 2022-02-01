@@ -84,7 +84,7 @@ const PaymentDetails = () => {
                                 <Feed.Summary>
                                     <div className="payment-records-feed-summary-container">
                                         <div className="payment-records-feed-summary">
-                                            <p><span style={{color: "#2185d0"}}>Amount:</span> {each.amount}</p>
+                                            <p><span style={{color: "#2185d0"}}>Amount:</span> ${each.amount}</p>
                                             <p><span style={{color: "#2185d0"}}>Grocery Items:</span> {each.groceryItems}</p>
                                         </div>
                                         <div className="payment-records-feed-editor">
