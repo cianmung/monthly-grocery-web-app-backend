@@ -17,6 +17,7 @@ const PaymentDetails = () => {
     const paymentDetailDisplayName = useStoreState((state) => state.paymentDetailDisplayName);
     const setPaymentDetailDisplayName = useStoreActions((actions) => actions.setPaymentDetailDisplayName);
     const getEachPaymentDetailsByName = useStoreState((state) => state.getEachPaymentDetailsByName);
+    //const fetchGetEachPaymentDetailsByName = useStoreActions((actions) => actions.fetchGetEachPaymentDetailsByName);
     const filterEachRecord = getEachPaymentDetailsByName(name);
     const deletePaymentDetail = useStoreActions((actions) => actions.deletePaymentDetail);
     const confirmDeletePopUp = useStoreState((state) => state.confirmDeletePopUp);
@@ -25,6 +26,7 @@ const PaymentDetails = () => {
     
     useEffect(() => {
         setEachPersonRecord(filterEachRecord);
+        console.log(filterEachRecord)
         setPaymentDetailDisplayName(name);
     },[paymentDetails, setEachPersonRecord, setPaymentDetailDisplayName, deletePaymentDetail])
 
@@ -62,7 +64,8 @@ const PaymentDetails = () => {
             </div>
           </div>
         </div>}        
-        {!isError && !isLoading && <div className="payment-details-container">
+        {!isError && !isLoading &&
+        <div className="payment-details-container">
             <div className="payment-detail-image">
                 <img src={payeeOptions.find(option => option.text === name).image.src} alt="avatar"/>
             </div>
@@ -111,7 +114,8 @@ const PaymentDetails = () => {
                                     </div>                        
                                 </Feed.Summary>
                             </Feed.Content>
-                            </Feed.Event>                            
+                            </Feed.Event>       
+
                         ))}
                     </Feed>
                 </Card.Content>

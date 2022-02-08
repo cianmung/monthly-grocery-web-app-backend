@@ -177,6 +177,18 @@ code {
   margin: 1em 0px;
 }
 
+.date-picker-container {
+  margin-bottom: 1em;
+}
+
+.date-picker-container .field, .date-picker-container .field .input {
+  width: 100%;
+}
+
+.date-picker-container .ui.icon.input>input {
+  cursor: pointer;
+}
+
 .add-new-grocery .payment-made-by {
   margin-top: 1em;
   width: 100%;

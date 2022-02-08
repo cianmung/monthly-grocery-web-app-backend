@@ -12,6 +12,9 @@ const paymentDetailSchema = new Schema({
         type: Number,
         required: true
     },
+    date: {
+        type: Date
+    },
     groceryItems: {
         type: String,
         required: false

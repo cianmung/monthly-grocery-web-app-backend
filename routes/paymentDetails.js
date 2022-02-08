@@ -10,11 +10,13 @@ router.route('/').get((req, res) => {
 router.route('/').post((req, res) => {
     const name = req.body.name;
     const amount = req.body.amount;
+    const date = Date(req.body.date);
     const groceryItems = req.body.groceryItems;
 
     const newPaymentDetail = new PaymentDetail({
         name,
         amount,
+        date,
         groceryItems
     })
 
@@ -23,10 +25,18 @@ router.route('/').post((req, res) => {
         .catch(err => res.status(400).json('Error' + err));
 })
 
+router.route('/:name').get((req, res) => {
+    const name = req.params.name;
+    PaymentDetail.find({ name: name })
+                .then(eachPayments => res.json(eachPayments))
+                .catch(err => res.status(400).json('Error: '+ err))
+})
+
 router.route('/:id').put((req, res) => {
     PaymentDetail.findById(req.params.id)
         .then(payment => {
             payment.name = req.body.name;
+            payment.date = new Date(req.body.date);
             payment.amount = Number(req.body.amount);
             payment.groceryItems = req.body.groceryItems;
 

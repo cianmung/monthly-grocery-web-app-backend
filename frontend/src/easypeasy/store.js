@@ -9,6 +9,13 @@ export default createStore({
     setIsLoading: action((state, payload) => {
         state.isLoading = payload;
     }),
+    currentDate: new Date(),
+    currentMonth: computed((state) => {
+        return state.currentDate.toLocaleString('en-us', {month: 'long'});
+    }),
+    currentYear: computed((state) => {
+        return state.currentDate.getFullYear();
+    }),
     isError: '',
     setIsError: action((state, payload) => {
         state.isError = payload;
@@ -50,6 +57,23 @@ export default createStore({
     getEachPaymentDetailsByName: computed((state) => {
         return (name) => state.paymentDetails.filter(each => each.name === name);
     }),
+    /*getEachPaymentDetailsByName: [],
+    setGetEachPaymentDetailsByName: action((state, payload) => {
+        state.getEachPaymentDetailsByName = payload;
+    }),
+    fetchGetEachPaymentDetailsByName: thunk(async (actions, name, helpers) => {
+        const { getEachPaymentDetailsByName } = helpers.getState();
+        actions.setIsLoading(true);
+        try {
+            await api.get(`/paymentdetails/`+name)
+                .then((response) => {
+                    actions.setGetEachPaymentDetailsByName([...getEachPaymentDetailsByName, response.data])
+                    actions.setIsLoading(false)
+                })
+        } catch(err) {
+            actions.setIsError(err.message)
+        }
+    }),*/
     newAmount: '',
     setNewAmount: action((state, payload) => {
         state.newAmount = payload;
@@ -70,9 +94,14 @@ export default createStore({
                 actions.setPaymentDetails([...paymentDetails, newPayment]);
                 actions.setNewAmount('');
                 actions.setNewGroceries('');
+                actions.setNewGroceryDate('');
                 actions.setIsLoading(false);
             })
             .catch((err) => actions.setIsError(err.message))
+    }),
+    newGroceryDate: '',
+    setNewGroceryDate: action((state, payload) => {
+        state.newGroceryDate = payload
     }),
     getEachPaymentById: computed((state) => {
         return (id) => state.paymentDetails.find(each => each._id.toString() === id.toString());        
@@ -80,6 +109,10 @@ export default createStore({
     editAmount: '',
     setEditAmount: action((state, payload) => {
         state.editAmount = payload;
+    }),
+    editDate: '',
+    setEditDate: action((state, payload) => {
+        state.editDate = payload;
     }),
     editGroceries: '',
     setEditGroceries: action((state, payload) => {
@@ -89,17 +122,18 @@ export default createStore({
     setEditPaymentMadeBy: action((state, payload) => {
         state.editPaymentMadeBy = payload;
     }),
-    updatePaymentDetail: thunk(async (actions, updatePayment, helpers) => {
+    updatePaymentDetail: thunk((actions, updatePayment, helpers) => {
         const { paymentDetails } = helpers.getState();
-        const { id } = updatePayment;
+        const { _id } = updatePayment;
         actions.setIsLoading(true);
 
-        return api.put(`/paymentdetails/${id}`, updatePayment)
+        return api.put(`/paymentdetails/${_id}`, updatePayment)
             .then(() => {
-                actions.setPaymentDetails(paymentDetails.map(each => each._id === id.toString() ? {...updatePayment} : each));
+                actions.setPaymentDetails(paymentDetails.map(each => each._id === _id.toString() ? {...updatePayment} : each));
                 actions.setEditAmount('');
                 actions.setEditGroceries('');
                 actions.setEditPaymentMadeBy('');
+                actions.setEditDate('');
                 actions.setIsLoading(false);
             })
             .catch((err) => actions.setIsError(err.message));

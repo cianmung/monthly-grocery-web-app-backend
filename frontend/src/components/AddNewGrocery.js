@@ -1,16 +1,20 @@
 import { Dropdown } from "semantic-ui-react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { useNavigate } from "react-router-dom";
-import Avatar from "../files/dummyavatar.png";
+import SemanticDatepicker from 'react-semantic-ui-datepickers';
+
+
 
 const AddNewGrocery = () => {
   const newAmount = useStoreState((state) => state.newAmount);
   const newGroceries = useStoreState((state) => state.newGroceries);
   const paymentMadeBy = useStoreState((state) => state.paymentMadeBy);
+  const newGroceryDate = useStoreState((state) => state.newGroceryDate);
 
   const setNewAmount = useStoreActions((actions) => actions.setNewAmount);
   const setNewGroceries = useStoreActions((actions) => actions.setNewGroceries);
   const setPaymentMadeBy = useStoreActions((actions) => actions.setPaymentMadeBy);
+  const setNewGroceryDate = useStoreActions((actions) => actions.setNewGroceryDate);
 
   const addNewPayment = useStoreActions((actions) => actions.addNewPayment);
 
@@ -22,7 +26,8 @@ const AddNewGrocery = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newPayment = {name: paymentMadeBy, amount: newAmount, groceryItems: newGroceries};
+    const newPayment = {name: paymentMadeBy, amount: newAmount, groceryItems: newGroceries, date: newGroceryDate};
+    console.log(newPayment);
     addNewPayment(newPayment);
     navigate('/');
   }
@@ -62,6 +67,14 @@ const AddNewGrocery = () => {
                       value={newAmount}
                       onChange={(e) => setNewAmount(e.target.value)}
                     />
+                </div>
+                <div className="date-picker-container">
+                  <SemanticDatepicker 
+                    required
+                    placeholder="Choose the date you bought the grocery"
+                    format = "Do MMMM YYYY"
+                    onChange={(event, data) =>  setNewGroceryDate(Date.parse(data.value))}
+                  />
                 </div>
                 <div className="ui form">
                   <textarea 
