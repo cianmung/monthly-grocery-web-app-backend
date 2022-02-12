@@ -1,6 +1,8 @@
 import EachPersonPayment from "./EachPersonPayment";
 import { useStoreState } from "easy-peasy";
 import { Link } from "react-router-dom";
+import MonthYearFilter from "./MonthYearFilter";
+import { Message, Button } from "semantic-ui-react";
 
 const Home = () => {
   const paymentOverall = useStoreState((state) => state.getPaymentOverall);
@@ -27,13 +29,25 @@ const Home = () => {
       }
       {!isError && !isLoading &&
       <>
-        {paymentOverall.map(each => (
-          <div key = {each.name} className="summary-for-each-person-container">
-            <EachPersonPayment each = {each}/>
-          </div>))}
+        
+        <MonthYearFilter />
+        {paymentOverall.length > 0 &&
+          <div>
+            {paymentOverall.map(each => (
+              <div key = {each.name} className="summary-for-each-person-container">
+                <EachPersonPayment each = {each}/>
+              </div>))}
+            </div>
+        }
+        {paymentOverall.length === 0 &&
+          <Message warning>
+            <Message.Header>No Payment Records Found!</Message.Header>
+            <p>Please Select <b>Month</b> and <b>Year</b> Again.</p>
+          </Message>
+        }     
           <div className="calculate-button-container">
             <Link to="/calculatepayments">
-              <button className="ui positive button">Calculate</button> 
+              <Button color="green" content="CALCULATE" icon="calculator" labelPosition="left" />
             </Link>
           </div>
       </>    

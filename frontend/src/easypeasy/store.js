@@ -3,6 +3,7 @@ import api from '../api/payments';
 import CMAvatar from "../files/ironman.png";
 import LuluAvatar from "../files/wonder.png";
 import HapAvatar from "../files/batman.png";
+import moment from "moment";
 
 export default createStore({
     isLoading: false,
@@ -39,7 +40,7 @@ export default createStore({
     getPaymentOverall: computed((state) => {
         var holder = {};
 
-        state.paymentDetails.forEach((each) => {
+        state.filteredPaymentDetails.forEach((each) => {
             if(holder.hasOwnProperty(each.name)){
                 holder[each.name] = holder[each.name] + parseFloat(each.amount);
             }else {
@@ -55,24 +56,11 @@ export default createStore({
         return paymentOverall;
     }),
     getEachPaymentDetailsByName: computed((state) => {
-        return (name) => state.paymentDetails.filter(each => each.name === name);
+        return (name) => state.paymentDetails.filter(each => each.name === name && moment(new Date(each.date)).format("MMMM") === state.selectedMonth && moment(new Date(each.date)).format("YYYY").toString() === state.selectedYear.toString());
     }),
     /*getEachPaymentDetailsByName: [],
     setGetEachPaymentDetailsByName: action((state, payload) => {
         state.getEachPaymentDetailsByName = payload;
-    }),
-    fetchGetEachPaymentDetailsByName: thunk(async (actions, name, helpers) => {
-        const { getEachPaymentDetailsByName } = helpers.getState();
-        actions.setIsLoading(true);
-        try {
-            await api.get(`/paymentdetails/`+name)
-                .then((response) => {
-                    actions.setGetEachPaymentDetailsByName([...getEachPaymentDetailsByName, response.data])
-                    actions.setIsLoading(false)
-                })
-        } catch(err) {
-            actions.setIsError(err.message)
-        }
     }),*/
     newAmount: '',
     setNewAmount: action((state, payload) => {
@@ -172,5 +160,25 @@ export default createStore({
             value: "Hap",
             image: { avatar: true, src: HapAvatar}
           }
-    ]
+    ],
+    filterMonths: [],
+    setFilterMonths: action((state, payload) => {
+        state.filterMonths = payload
+    }),
+    filterYears: [],
+    setFilterYears: action((state, payload) => {
+        state.filterYears = payload
+    }),
+    selectedMonth: moment(new Date()).format("MMMM"),
+    setSelectedMonth: action((state, payload) => {
+        state.selectedMonth = payload
+    }),
+    selectedYear: moment(new Date()).format("YYYY"),
+    setSelectedYear: action((state, payload) => {
+        state.selectedYear = payload
+    }),
+    filteredPaymentDetails: [],
+    setFilteredPaymentDetails: action((state, payload) => {
+        state.filteredPaymentDetails = payload
+    })
 })

@@ -1,5 +1,6 @@
 import { useStoreState } from 'easy-peasy';
 import { Link } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 
 const ResultPayments = () => {
     const paymentOverall = useStoreState((state) => state.getPaymentOverall);
@@ -57,12 +58,7 @@ const ResultPayments = () => {
                 </div>
                 <div className="payment-detail-button">
                 <Link to="/">
-                    <button className="ui primary button home icon ">
-                    <i 
-                        aria-hidden="true" 
-                        className="home icon"
-                    />
-                    </button>
+                  <Button color="blue" content="HOME" icon="home" labelPosition="left" />
                 </Link>
             </div>
             </div>

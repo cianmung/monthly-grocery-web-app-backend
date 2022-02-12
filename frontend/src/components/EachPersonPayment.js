@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useStoreState } from "easy-peasy";
+import { Button } from "semantic-ui-react";
 
 const EachPersonPayment = ({each}) => {
     const payeeOptions = useStoreState((state) => state.payeeOptions);
@@ -17,19 +18,12 @@ const EachPersonPayment = ({each}) => {
         <div className="person-profile-payment-footer">
             <h3>Total: ${each.amount}</h3>
             <div className="person-profile-payment-button-container">
-                <Link to="/newgrocery">
-                    <button className ="ui icon primary button">
-                        <i aria-hidden="true" className="cart plus icon"></i>
-                    </button>
-                </Link>
                 <Link to={`/paymentdetail/${each.name}`}>
-                    <button className="ui icon button">
-                        <i aria-hidden="true" className="list ul icon"></i>
-                    </button>
+                    <Button color="blue" content="DETAILS" icon="folder open outline" labelPosition="left" />
                 </Link>
-                    </div>
-                </div>
             </div>
+        </div>
+        </div>
         </div>
   );
 };

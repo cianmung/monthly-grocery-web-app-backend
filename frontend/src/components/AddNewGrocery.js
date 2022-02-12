@@ -27,7 +27,6 @@ const AddNewGrocery = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newPayment = {name: paymentMadeBy, amount: newAmount, groceryItems: newGroceries, date: newGroceryDate};
-    console.log(newPayment);
     addNewPayment(newPayment);
     navigate('/');
   }

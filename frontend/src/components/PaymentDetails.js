@@ -1,8 +1,9 @@
-import { Confirm, Card, Feed } from 'semantic-ui-react';
+import { Confirm, Card, Feed, Button, Message } from 'semantic-ui-react';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import Moment from "react-moment";
+import MonthYearFilterPaymentDetails from './MonthYearFilterPaymentDetails';
 
 const PaymentDetails = () => {
     const { name } = useParams();
@@ -17,18 +18,19 @@ const PaymentDetails = () => {
     const paymentDetailDisplayName = useStoreState((state) => state.paymentDetailDisplayName);
     const setPaymentDetailDisplayName = useStoreActions((actions) => actions.setPaymentDetailDisplayName);
     const getEachPaymentDetailsByName = useStoreState((state) => state.getEachPaymentDetailsByName);
-    //const fetchGetEachPaymentDetailsByName = useStoreActions((actions) => actions.fetchGetEachPaymentDetailsByName);
     const filterEachRecord = getEachPaymentDetailsByName(name);
     const deletePaymentDetail = useStoreActions((actions) => actions.deletePaymentDetail);
     const confirmDeletePopUp = useStoreState((state) => state.confirmDeletePopUp);
     const setConfirmDeletePopUp = useStoreActions((actions) => actions.setConfirmDeletePopUp);
 
+    const selectedMonth = useStoreState(state => state.selectedMonth);
+    const selectedYear = useStoreState(state => state.selectedYear);
+
     
     useEffect(() => {
         setEachPersonRecord(filterEachRecord);
-        console.log(filterEachRecord)
         setPaymentDetailDisplayName(name);
-    },[paymentDetails, setEachPersonRecord, setPaymentDetailDisplayName, deletePaymentDetail])
+    },[paymentDetails, setEachPersonRecord, setPaymentDetailDisplayName, deletePaymentDetail, selectedMonth, selectedYear])
 
     const handleDelete = (id, name) => {
         deletePaymentDetail(id);
@@ -71,11 +73,12 @@ const PaymentDetails = () => {
             </div>
             <Card className="payment-details">
                 <Card.Content>
-                    <Card.Header className="payment-records-content-header">Payment Records for <span style={{color: "#2185d0"}}>{paymentDetailDisplayName}</span></Card.Header>
+                    <MonthYearFilterPaymentDetails name={name}/>
                 </Card.Content>
-                <Card.Content className="payment-records-content-container">
+                <Card.Content className="payment-records-content-container"> 
+                    <Card.Header className="payment-records-content-header">Payment Records for <span style={{color: "#2185d0"}}>{paymentDetailDisplayName}</span></Card.Header>
                     <Feed>
-                        {eachPersonRecord.map(each => (
+                        {eachPersonRecord.length > 0 && eachPersonRecord.map(each => (
                             <Feed.Event key={each._id}>
                             <Feed.Label image={payeeOptions.find(option => option.text === each.name).image.src} />
                             <Feed.Content>
@@ -117,18 +120,19 @@ const PaymentDetails = () => {
                             </Feed.Event>       
 
                         ))}
+                        {eachPersonRecord.length === 0 &&
+                            <Message warning>
+                            <Message.Header>No Payment Records Found!</Message.Header>
+                            <p>Please Select <b>Month</b> and <b>Year</b> Again.</p>
+                          </Message>
+                        }
                     </Feed>
                 </Card.Content>
             </Card>          
 
             <div className="payment-detail-button">
                 <Link to="/">
-                    <button className="ui primary button home icon">
-                    <i 
-                        aria-hidden="true" 
-                        className="home icon"
-                    />
-                    </button>
+                    <Button color="blue" content="HOME" icon="home" labelPosition="left" />
                 </Link>
             </div> 
           </div>  }        
