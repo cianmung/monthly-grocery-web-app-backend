@@ -1,28 +1,35 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const paymentDetailSchema = new Schema({
+const paymentDetailSchema = new Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        minlength: 3
+      type: String,
+      required: true,
+      minlength: 3,
     },
     amount: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     date: {
-        type: Date
+      type: Date,
     },
     groceryItems: {
-        type: String,
-        required: false
-    }
-}, {
-    timestamps: true
-});
+      type: String,
+      required: false,
+    },
+    groceryType: {
+      type: String,
+      required: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const PaymentDetail = mongoose.model('PaymentDetail', paymentDetailSchema);
+const PaymentDetail = mongoose.model("PaymentDetail", paymentDetailSchema);
 
 module.exports = PaymentDetail;
