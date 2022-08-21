@@ -37,8 +37,8 @@ const MonthYearFilter = () => {
   );
 
   useEffect(() => {
-    var filteredMonths = [];
-    var filteredYears = [];
+    let filteredMonths = [];
+    let filteredYears = [];
 
     uniqueMonths.map((each) => {
       filteredMonths.push({ key: each, text: each, value: each });
@@ -55,14 +55,6 @@ const MonthYearFilter = () => {
         moment(new Date(each.date)).format("MMMM") === selectedMonth &&
         moment(new Date(each.date)).format("YYYY") === selectedYear
     );
-
-    /*let selectedQuery = selectedQueryByMonth.map((each) => {
-      if (!each.hasOwnProperty("groceryType")) {
-        return { ...each, groceryType: "3-People" };
-      } else {
-        return { ...each };
-      }
-    });*/
 
     setFilteredPaymentDetails(selectedQuery);
   }, [selectedMonth, selectedYear]);

@@ -47,17 +47,30 @@ export default createStore({
     state.paymentDetailDisplayName = payload;
   }),
   getPaymentOverall: computed((state) => {
-    var holder = {};
-
-    state.filteredPaymentDetails.forEach((each) => {
-      if (holder.hasOwnProperty(each.name)) {
-        holder[each.name] = holder[each.name] + parseFloat(each.amount);
-      } else {
-        holder[each.name] = parseFloat(each.amount);
-      }
+    let holder = {};
+    const payees =
+      state.groceryType === "3-People"
+        ? state.payeeOptions.filter((each) => each.key !== 4)
+        : state.payeeOptions;
+    //console.log(payees);
+    payees.map((payee, index) => {
+      state.filteredPaymentDetails.forEach((each) => {
+        if (payee.text === each.name) {
+          if (holder.hasOwnProperty(each.name)) {
+            holder[each.name] = holder[each.name] + parseFloat(each.amount);
+          } else {
+            holder[each.name] = parseFloat(each.amount);
+          }
+        } else {
+          if (holder.hasOwnProperty(payee.text)) {
+            holder[payee.text] = holder[payee.text] + 0;
+          } else {
+            holder[payee.text] = 0;
+          }
+        }
+      });
     });
-
-    var paymentOverall = [];
+    let paymentOverall = [];
     for (var each in holder) {
       paymentOverall.push({ name: each, amount: holder[each] });
     }
