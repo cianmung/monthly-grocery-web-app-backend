@@ -9,22 +9,10 @@ import Login from "./components/Login";
 import SelectGroceryType from "./components/SelectGroceryType";
 
 import { Route, Routes, Navigate } from "react-router-dom";
-import { useEffect } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import useAxiosFetch from "./hooks/useAxiosFetch";
 
 function App() {
   const isLoggedIn = useStoreState((state) => state.isLoggedIn);
-  const setPaymentDetails = useStoreActions(
-    (actions) => actions.setPaymentDetails
-  );
-  //const { data } = useAxiosFetch('http://localhost:3500/payments');
-  //const { data } = useAxiosFetch("/paymentdetails");
-
-  /*useEffect(() => {
-    setPaymentDetails(data);
-  }, [data, setPaymentDetails]);*/
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
