@@ -2,21 +2,24 @@
   "name": "y",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "frontend-install": "npm install --prefix frontend",
-    "start":"node server.js",
-    "server":"nodemon server.js",
-    "frontend":"npm start --prefix frontend",
-    "dev":"concurrently \"npm run server\" \"npm run frontend\"",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "frontend": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.1.8"
   }
 }

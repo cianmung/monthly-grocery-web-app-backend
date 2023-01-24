@@ -1,8 +1,8 @@
-import EachPersonPayment from "./EachPersonPayment";
 import { useStoreState } from "easy-peasy";
 import { Link } from "react-router-dom";
-import MonthYearFilter from "./MonthYearFilter";
 import { Message, Button } from "semantic-ui-react";
+import MonthYearFilter from "./MonthYearFilter";
+import EachPersonPayment from "./EachPersonPayment";
 
 const Home = () => {
   const paymentOverall = useStoreState((state) => state.getPaymentOverall);

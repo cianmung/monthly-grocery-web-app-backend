@@ -13,9 +13,7 @@ const Footer = () => {
         <NavLink
           to="/"
           style={{ color: "rgba(255,255,255,.7)" }}
-          className={({ isActive }) =>
-            "item home icon" + (isActive ? " active" : "")
-          }
+          className={({ isActive }) => "item" + (isActive ? " active" : "")}
         >
           <i aria-hidden="true" className="home icon large" />
         </NavLink>

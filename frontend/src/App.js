@@ -1,5 +1,7 @@
+import { Route, Routes } from "react-router-dom";
+//components
 import Layout from "./components/Layout";
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import About from "./components/About";
 import AddNewGrocery from "./components/AddNewGrocery";
 import PaymentDetails from "./components/PaymentDetails";
@@ -7,54 +9,44 @@ import EditPaymentDetail from "./components/EditPaymentDetail";
 import ResultPayments from "./components/ResultPayments";
 import Login from "./components/Login";
 import SelectGroceryType from "./components/SelectGroceryType";
+import Profile from "./components/Profile";
 
-import { Route, Routes, Navigate } from "react-router-dom";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import RequiredAuth from "./components/auth/RequiredAuth";
+import PersistLogin from "./components/auth/PersistLogin";
+import Error from "./components/auth/Error";
+
+const ROLES = {
+  Admin: 1001,
+  User: 1002,
+};
 
 function App() {
-  const isLoggedIn = useStoreState((state) => state.isLoggedIn);
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        {/* public routes */}
         <Route path="login" element={<Login />} />
-        <Route
-          path="selectgrocerytype"
-          element={
-            !isLoggedIn ? <Navigate to="/login" /> : <SelectGroceryType />
-          }
-        />
-        <Route
-          index
-          element={!isLoggedIn ? <Navigate to="/login" /> : <Home />}
-        />
-        <Route
-          path="about"
-          element={!isLoggedIn ? <Navigate to="/login" /> : <About />}
-        />
-        <Route
-          path="newgrocery"
-          element={!isLoggedIn ? <Navigate to="/login" /> : <AddNewGrocery />}
-        />
-        <Route path="paymentdetail">
+        {/* protected routes */}
+        <Route element={<PersistLogin />}>
           <Route
-            path=":name"
-            element={
-              !isLoggedIn ? <Navigate to="/login" /> : <PaymentDetails />
-            }
-          />
+            element={<RequiredAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}
+          >
+            <Route index element={<Home />} />
+            <Route path="selectgrocerytype" element={<SelectGroceryType />} />
+            <Route path="about" element={<About />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="newgrocery" element={<AddNewGrocery />} />
+            <Route path="paymentdetail">
+              <Route path=":name" element={<PaymentDetails />} />
+            </Route>
+            <Route path="editpaymentdetail">
+              <Route path=":id" element={<EditPaymentDetail />} />
+            </Route>
+            <Route path="calculatepayments" element={<ResultPayments />} />
+          </Route>
         </Route>
-        <Route path="editpaymentdetail">
-          <Route
-            path=":id"
-            element={
-              !isLoggedIn ? <Navigate to="/login" /> : <EditPaymentDetail />
-            }
-          />
-        </Route>
-        <Route
-          path="calculatepayments"
-          element={!isLoggedIn ? <Navigate to="/login" /> : <ResultPayments />}
-        />
+        {/* error */}
+        <Route path="*" element={<Error />} />
       </Route>
     </Routes>
   );

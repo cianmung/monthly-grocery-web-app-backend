@@ -21,6 +21,12 @@ const Header = () => {
           >
             <i aria-hidden="true" className="group icon large" />
           </NavLink>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) => "item" + (isActive ? " active" : "")}
+          >
+            <i aria-hidden="true" className="user icon large" />
+          </NavLink>
         </div>
       </div>
     </div>

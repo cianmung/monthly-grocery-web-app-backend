@@ -95,7 +95,8 @@ code {
 .PaymentDetails,
 .EditPaymentDetail,
 .ResultPayments,
-.Login {
+.Login,
+.Profile {
   flex-grow: 1;
   width: 100%;
   padding: 0.5em;
@@ -387,4 +388,20 @@ p.summary-footer {
 
 .safe-word-input-container .button {
   margin-top: 2em;
+}
+
+/* Login Page */
+.Profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-component-container {
+  text-align: center;
+  width: 80%;
+  margin-bottom: 30%;
+}
+
+.profile-component-container .card .image {
+  padding: 4rem;
 }

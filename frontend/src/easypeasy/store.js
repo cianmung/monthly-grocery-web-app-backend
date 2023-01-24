@@ -1,5 +1,5 @@
 import { createStore, action, computed, thunk } from "easy-peasy";
-import api from "../api/payments";
+import api from "../api/axios";
 import CMAvatar from "../files/ironman.png";
 import LuluAvatar from "../files/wonder.png";
 import KyawAvatar from "../files/batman.png";
@@ -87,10 +87,6 @@ export default createStore({
             state.selectedYear.toString()
       );
   }),
-  /*getEachPaymentDetailsByName: [],
-    setGetEachPaymentDetailsByName: action((state, payload) => {
-        state.getEachPaymentDetailsByName = payload;
-    }),*/
   newAmount: "",
   setNewAmount: action((state, payload) => {
     state.newAmount = payload;
